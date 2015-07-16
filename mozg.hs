@@ -106,8 +106,8 @@ main
                 , (S.singleton d, S.singleton $ a <> " " {-<> T.pack (show a) <> " " -}<> b)
                 ))
 
-letters = map T.singleton "בגדהוזחטיכלמנספצקרת"
 gmps    = map T.singleton "bgdhvzxtyklmnspcqrf"    -- + ay,sh,si
+letters = map T.singleton "בגדהוזחטיכלמנספצקרת"
 g2l     = zip gmps letters 
         <>  [ ("al","א")
             , ("ay","ע")
@@ -138,6 +138,13 @@ g2o     =   [ ("w" , T.singleton '\x05B0') -- шва
             , ("o1", "ו" <> T.singleton '\x05B9') -- полный холам
             , ("u3", T.singleton '\x05BB') -- кубуц           
             ]
+
+g2s = M.fromList
+    $ map (first (<>".gif")) 
+    $ g2l 
+    <> map ((<>"0") *** (<> T.singleton '\x05BC')) g2l -- дагеш
+    <> g2o
+    <> [("kw", "\x05B0ך")]
             -- 
 ogl = S.map T.head 
     $ S.delete (T.singleton '\x05B9') 
@@ -148,8 +155,3 @@ isOgl = (`S.member` ogl)
 isDag = (== '\x05BC')
 isShDot = (`elem` "\1473\1474")
 
-g2s = M.fromList
-    $ map (first (<>".gif")) 
-    $ g2l 
-    <> map ((<>"0") *** (<> T.singleton '\x05BC')) g2l -- дагеш
-    <> g2o
