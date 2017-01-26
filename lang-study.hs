@@ -27,14 +27,14 @@ printSite n = do
   where
     concatTd xs = reverse $ go (xs, "", [], [])
       where
-        go ([], _, rs, rss) = rss 
+        go ([], _, rs, rss) = rss
         go (a:as, r, rs, rss) = case a of
             TagOpen "table" _   -> go (as, "", [], rss)
             TagClose "table"    -> go (as, "", rs, rss)
             TagOpen "td" _      -> go (as, "", rs, rss)
             TagClose "td"       -> go (as, "", rs', rss)
             TagText txt         -> go (as, r <> txt, rs, rss)
-            TagOpen "tr" _      -> go (as, "", [], rss)            
+            TagOpen "tr" _      -> go (as, "", [], rss)
             TagClose "tr"       -> go (as, "", [], row:rss)
             _ -> go (as, r, rs, rss)
           where
@@ -42,11 +42,11 @@ printSite n = do
             row = case rs' of
                 x1:x2:x3:_ -> TL.concat [x1,"\t",x3,"\t",x2]
                 _ -> "-----------"
-            correct = TL.replace ";;" ";" 
+            correct = TL.replace ";;" ";"
                     . TL.map (\c -> if c == '\n' then ';' else c)
                     . trim . trim
               where
-                trim = TL.reverse . TL.dropWhile (`elem` " \n")
-            
+                trim = TL.reverse . TL.dropWhile (`elem` (" \n" :: [Char]))
+
     isZn (TagText x) = "значение" `TL.isInfixOf` x
     isZn _ = False

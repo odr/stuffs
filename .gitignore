@@ -1,0 +1,5 @@
+*.sav
+*.out
+*.log
+.stack-work
+res
